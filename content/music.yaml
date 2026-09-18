@@ -1,0 +1,10 @@
+items:
+  #- title: "Blood Moon"
+   # type: "spotify"
+    #url: "https://open.spotify.com/track/6bL0f1r9K5Example"
+    #description: "Single release"
+
+  - title: "NAMELESS_0"
+    type: "youtube"
+    url: "https://www.youtube.com/watch?v=EATKNqp0dOU"
+    description: "Live at the alluvion"

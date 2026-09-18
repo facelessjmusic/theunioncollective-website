@@ -1,0 +1,18 @@
+copyright: "© The Union Collective"
+
+artist_name: "The Union Collective"
+artist_email: "jay@facelessjay.io"
+
+contact_str: "Reach out if you want to give me your money."
+
+description: "Official website of The Union Collective — independent masked music artist from Traverse City, Michigan."
+
+opengraph_image: "https://facelessjay.io/img/logo2.svg"
+
+canonical_url: "https://theunioncollective.io"
+
+fonts:
+  - "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap" 
+  - "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600&display=swap"
+
+
