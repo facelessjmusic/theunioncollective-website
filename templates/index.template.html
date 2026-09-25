@@ -24,10 +24,8 @@
     "@type": "MusicGroup",
     "name": "{{ARTIST_NAME}}",
     "url": "{{CANONICAL_URL}}",
-    "genre": ["Singer-songwriter", "Guitar-driven", "Experimental", "Indie"],
-    "sameAs": [
-      "https://www.youtube.com/@facelessjaymusic"
-    ]
+    "genre": {{GENRE_LIST}},
+    "sameAs": {{SAMEAS_LIST}}
   }
   </script>
 
@@ -39,10 +37,10 @@
   <!-- Apple / iOS -->
   <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180x180.png">
   <!-- Favicon -->
-  <link rel="icon" href="img/logo2.svg">
+  <link rel="icon" href="img/union-street-collective-logo.svg" type="image/svg+xml">
 
   <!-- Google Search -->
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 
   <!-- Bootstrap CSS -->
   <link
@@ -65,7 +63,7 @@
   <header class="masthead mb-auto">
     <div class="inner">
       <h3 class="masthead-brand" id="header-logo">
-        <img src="img/logo.svg" alt="Logo">
+        <img src="img/union-street-collective-logo.svg" alt="Logo">
       </h3>
 
       <div class="nav-container">
@@ -74,8 +72,8 @@
           <a class="nav-link active" id="nav-home">Home</a>
           <a class="nav-link" id="nav-bio">Bio</a>
           <a class="nav-link" id="nav-events">Events</a>
-          <a class="nav-link" id="nav-music">Music</a>
-          <a class="nav-link" id="nav-gallery">Gallery</a>
+          <a class="nav-link" id="nav-artists">Artists</a>
+          <a class="nav-link" id="nav-merch">Merch</a>
           <a class="nav-link" id="nav-contact">Contact</a>
         </nav>
       </div>
@@ -88,7 +86,7 @@
     <!-- HOME -->
     <div id="content-home">
       <div class="hero-logo mb-3">
-        <img src="img/logo2.svg" alt="{{ARTIST_NAME}} Logo" class="img-fluid" style="max-height: 200px;">
+        <img src="img/union-street-collective-logo.svg" alt="{{ARTIST_NAME}} Logo" class="img-fluid" style="max-height: 200px;">
       </div>
     </div>
 
@@ -102,39 +100,31 @@
 
     <!-- EVENTS -->
     <div id="content-events" style="display:none;">
-      <!---->
       <h1 class="cover-heading fade-in-appear">Upcoming Events</h1>
 
       <div class="event-list">
-
         <!-- {{EVENTS_SECTION}} -->
-
       </div>
 
     </div>
 
+    <!-- ARTISTS -->
+    <div id="content-artists" style="display:none;">
+      <h1 class="cover-heading fade-in-appear">Our Artists</h1>
 
-    <!-- MUSIC -->
-    <div id="content-music" style="display:none;">
-      <h1 class="cover-heading fade-in-appear">Music</h1>
-
-      <div class="music-list">
-
-        <!-- {{MUSIC_SECTION}} -->
-
-      </div>
-
-    </div>
-
-
-    <!-- GALLERY -->
-    <div id="content-gallery" style="display:none;">
-      <h1 class="cover-heading fade-in-appear">Gallery</h1>
-      <div class="gallery-grid">
-        <!-- {{GALLERY_SECTION}} -->
+      <div class="artist-list">
+        <!-- {{ARTISTS_SECTION}} -->
       </div>
     </div>
 
+    <!-- MERCH -->
+    <div id="content-merch" style="display:none;">
+      <h1 class="cover-heading fade-in-appear">Merch</h1>
+
+      <div class="merch-list">
+        <!-- {{MERCH_SECTION}} -->
+      </div>
+    </div>
 
     <!-- CONTACT -->
     <div id="content-contact" style="display:none;">
@@ -151,9 +141,6 @@
         </a>
       </div>
     </div>
-
-
-
 
   </main>
 
@@ -175,20 +162,18 @@ const sections = {
   home: document.getElementById("content-home"),
   bio: document.getElementById("content-bio"),
   events: document.getElementById("content-events"),
-  music: document.getElementById("content-music"),
-  contact: document.getElementById("content-contact"),
-  gallery: document.getElementById("content-gallery")
+  artists: document.getElementById("content-artists"),
+  merch: document.getElementById("content-merch"),
+  contact: document.getElementById("content-contact")
 };
 
 function showSection(section) {
 
-  // Hide all
   Object.values(sections).forEach(div => {
     div.style.display = "none";
     div.style.opacity = "0";
   });
 
-  // Show selected
   const activeSection = sections[section];
   activeSection.style.display = "block";
 
@@ -196,11 +181,9 @@ function showSection(section) {
     activeSection.style.opacity = "1";
   });
 
-  // Nav active state
   links.forEach(link => link.classList.remove("active"));
   document.getElementById("nav-" + section).classList.add("active");
 
-  // Header logo logic
   const headerLogo = document.getElementById("header-logo");
 
   if (section === "home") {
@@ -212,75 +195,59 @@ function showSection(section) {
     headerLogo.style.pointerEvents = "auto";
   }
 
-  // If nav is open on mobile, close it after navigation
   const nav = document.getElementById('main-nav');
   if (nav && nav.classList.contains('open')) {
     nav.classList.remove('open');
   }
 }
 
-// Navigation clicks
 document.getElementById("nav-home").onclick = () => showSection("home");
 document.getElementById("nav-bio").onclick = () => showSection("bio");
 document.getElementById("nav-contact").onclick = () => showSection("contact");
 document.getElementById("nav-events").onclick = () => showSection("events");
-document.getElementById("nav-music").onclick = () => showSection("music");
-document.getElementById("nav-gallery").onclick = () => showSection("gallery");
+document.getElementById("nav-artists").onclick = () => showSection("artists");
+document.getElementById("nav-merch").onclick = () => showSection("merch");
 
-
-// Nav toggle for small screens
 const navToggle = document.getElementById('nav-toggle');
 const mainNav = document.getElementById('main-nav');
 
 navToggle.addEventListener('click', () => {
-  mainNav.classList.toggle('open'); // Toggle the open class
-  
+  mainNav.classList.toggle('open');
+
   if (mainNav.classList.contains('open')) {
-    document.body.style.overflow = 'hidden'; // Prevent scrolling when nav is open
+    document.body.style.overflow = 'hidden';
   } else {
-    document.body.style.overflow = ''; // Re-enable scrolling when nav is closed
+    document.body.style.overflow = '';
   }
 });
 
-
-// Initial load
 showSection("home");
 
 </script>
 <script>
-// Load YouTube IFrame API and attach error handlers to replace blocked embeds with a fallback link
 (function() {
-  // Insert the API script
   var tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   var firstScript = document.getElementsByTagName('script')[0];
   firstScript.parentNode.insertBefore(tag, firstScript);
 
-  // When API is ready, create players for each iframe with class 'yt-embed'
   window.onYouTubeIframeAPIReady = function() {
     var iframes = document.querySelectorAll('.yt-embed');
-    iframes.forEach(function(iframe) {
-      try {
-        /* global YT */
-        var player = new YT.Player(iframe.id, {
-          events: {
-            onError: function(event) {
-              // Log numeric error for diagnosis (100/101/150/153 etc.)
-              console.warn('YouTube player error for', iframe.id, 'code=', event.data);
-
-              // Replace iframe with fallback notice and link
-              var srcUrl = iframe.getAttribute('data-watchurl') || iframe.src;
-              var fallback = document.createElement('div');
-              fallback.className = 'music-fallback';
-              fallback.innerHTML = '<p>Video unavailable (YouTube error ' + event.data + ') — <a href="' + srcUrl + '" target="_blank" rel="noopener">Open on YouTube</a></p>';
-              iframe.parentNode.replaceChild(fallback, iframe);
-            }
+    iframes.forEach(function(frame) {
+      var player = new YT.Player(frame.id, {
+        events: {
+          onError: function() {
+            const watchUrl = frame.dataset.watchurl || '';
+            const fallback = document.createElement('a');
+            fallback.href = watchUrl || '#';
+            fallback.target = '_blank';
+            fallback.rel = 'noopener';
+            fallback.className = 'music-fallback';
+            fallback.textContent = 'Watch on YouTube';
+            frame.replaceWith(fallback);
           }
-        });
-      } catch (e) {
-        // If constructing player fails, leave iframe as-is
-        // (errors will surface in the browser console)
-      }
+        }
+      });
     });
   };
 })();

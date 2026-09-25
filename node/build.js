@@ -13,6 +13,8 @@ const templatePath = path.join('templates', 'index.template.html');
 const bioPath = path.join('content', 'bio.md');
 const eventsPath = path.join('content', 'events.yaml');
 const musicPath = path.join('content', 'music.yaml');
+const artistsPath = path.join('content', 'artists.yaml');
+const merchPath = path.join('content', 'merch.yaml');
 const galleryPath = path.join('content', 'gallery');
 const outputPath = 'index.html';
 
@@ -156,12 +158,9 @@ if (fs.existsSync(musicPath)) {
 
       function extractSpotifyEmbed(u) {
         if (!u) return null;
-        // If it's already an embed URL, return it
         if (u.includes('open.spotify.com/embed')) return u;
-        // Try to capture type and id (track/album/playlist)
         const m = u.match(/open\.spotify\.com\/(track|album|playlist)\/([A-Za-z0-9]+)/);
         if (m) return `https://open.spotify.com/embed/${m[1]}/${m[2]}`;
-        // As a fallback, return null
         return null;
       }
 
@@ -172,7 +171,6 @@ if (fs.existsSync(musicPath)) {
       if ((item.type || '').toLowerCase() === 'youtube') {
         const id = extractYouTubeId(item.url);
         if (id) {
-          // Use privacy-enhanced domain and enable JS API so we can detect player errors
           embed = `<iframe id="yt-${index}" class="yt-embed" width="560" height="315" src="https://www.youtube-nocookie.com/embed/${id}?rel=0&enablejsapi=1" data-watchurl="${item.url}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         }
       } else if ((item.type || '').toLowerCase() === 'spotify') {
@@ -213,6 +211,111 @@ finalHtml = finalHtml.replace(
   musicHtml
 );
 
+// ---------- ARTISTS YAML ----------
+
+let artistsHtml = '';
+
+if (fs.existsSync(artistsPath)) {
+  const rawArtists = fs.readFileSync(artistsPath, 'utf-8');
+  const artistsData = yaml.load(rawArtists);
+  const items = Array.isArray(artistsData) ? artistsData : artistsData?.artists || [];
+
+  if (items.length === 0) {
+    artistsHtml = `
+      <div class="no-artists fade-in-appear">
+        No artists announced yet — check back soon.
+      </div>
+    `;
+  } else {
+    artistsHtml = items.map((artist, index) => {
+      const image = artist.img
+        ? `<img src="${artist.img}" alt="${artist.name}" class="artist-photo">`
+        : `<div class="artist-photo artist-photo-fallback">${(artist.name || 'Artist').slice(0, 1)}</div>`;
+
+      const links = Array.isArray(artist.links)
+        ? artist.links.map(link => `
+            <a href="${link.url}" target="_blank" rel="noopener" class="artist-link">
+              ${link.label || 'Link'}
+            </a>
+          `).join('')
+        : '';
+
+      const delay = (index * 0.13).toFixed(2);
+
+      return `
+        <div class="artist-card fade-in-appear" style="animation-delay: ${delay}s">
+          <div class="artist-photo-wrap">
+            ${image}
+          </div>
+          <div class="artist-info">
+            <h3 class="artist-name">${artist.name || 'Artist'}</h3>
+            <div class="artist-bio">${artist.bio || ''}</div>
+            <div class="artist-links">${links}</div>
+          </div>
+        </div>
+      `;
+    }).join('\n');
+  }
+}
+
+finalHtml = finalHtml.replace(
+  '<!-- {{ARTISTS_SECTION}} -->',
+  artistsHtml
+);
+
+// ---------- MERCH YAML ----------
+
+let merchHtml = '';
+
+if (fs.existsSync(merchPath)) {
+  const rawMerch = fs.readFileSync(merchPath, 'utf-8');
+  const merchData = yaml.load(rawMerch);
+  const items = Array.isArray(merchData) ? merchData : merchData?.items || [];
+
+  if (items.length === 0) {
+    merchHtml = `
+      <div class="no-merch fade-in-appear">
+        Merch drop coming soon.
+      </div>
+    `;
+  } else {
+    merchHtml = items.map((item, index) => {
+      const image = item.img
+        ? `<img src="${item.img}" alt="${item.title}" class="merch-image">`
+        : `<div class="merch-image merch-image-fallback">Merch</div>`;
+
+      const price = item.price ? `<div class="merch-price">${item.price}</div>` : '';
+      const description = item.description ? `<div class="merch-description">${item.description}</div>` : '';
+      const buyButton = item.buy_url
+        ? `<a href="${item.buy_url}" target="_blank" rel="noopener" class="btn btn-secondary merch-btn">Buy</a>`
+        : '';
+
+      const delay = (index * 0.12).toFixed(2);
+
+      return `
+        <div class="merch-card fade-in-appear" style="animation-delay: ${delay}s">
+          <div class="merch-image-wrap">
+            ${image}
+          </div>
+          <div class="merch-info">
+            <div class="merch-title-row">
+              <h3 class="merch-title">${item.title || 'Merch'}</h3>
+              ${price}
+            </div>
+            ${description}
+            ${buyButton}
+          </div>
+        </div>
+      `;
+    }).join('\n');
+  }
+}
+
+finalHtml = finalHtml.replace(
+  '<!-- {{MERCH_SECTION}} -->',
+  merchHtml
+);
+
 // ---------- GALLERY ----------
 
 let galleryHtml = '';
@@ -229,7 +332,6 @@ if (fs.existsSync(galleryPath)) {
     } else {
       galleryHtml = images.map(fn => {
         const src = path.posix.join('content', 'gallery', fn);
-        // simple download button (SVG icon)
         const downloadBtn = `
           <a class="gallery-download" href="${src}" download target="_blank" rel="noopener" title="Download">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -278,6 +380,14 @@ finalHtml = finalHtml.replace(/{{DESCRIPTION}}/g, description);
 // ---------- INJECT CANONICAL URL ----------
 const canonicalUrl = configData?.canonical_url || '';
 finalHtml = finalHtml.replace(/{{CANONICAL_URL}}/g, canonicalUrl);
+
+// ---------- INJECT GENRE LIST ----------
+const genreList = configData?.genre || [];
+finalHtml = finalHtml.replace(/{{GENRE_LIST}}/g, JSON.stringify(genreList));
+
+// ---------- INJECT SAMEAS LIST ----------
+const sameAsList = configData?.sameAs || [];
+finalHtml = finalHtml.replace(/{{SAMEAS_LIST}}/g, JSON.stringify(sameAsList));
 
 // ---------- INJECT OPENGRAPH IMAGE ----------
 const ogImage = configData?.['opengraph-image'] || '';

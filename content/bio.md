@@ -1,3 +1,3 @@
-In early 2026, Traverse City underwent one of its greatest disasters since the 100mph straightline winds of 2015: The closure of Union Street Station.
+In early 2026, Traverse City lost the closest thing it had to a proper music venue. For all it's blemishes and flaws, Union Street was a gathering ground and third space for Musicians and Patrons to gather and enjoy unpretentious art. It's departure leaves a major hole in the local community.
 
-Unwilling to accept defeat and seeing opportunity, Traverse city's foremost collection of freaks and musicians came together and created something beautiful of the ashes. Traverse City's premier musician-owned venue, also known as
+Unwilling to accept defeat, Traverse city's foremost collection of freaks and musicians came together and created something beautiful out of the ashes. Traverse City's only musician-owned cooperative label, also known as

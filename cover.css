@@ -5,8 +5,8 @@
 :root {
   /* Background */
   --bg-image: url('img/bg.jpg');
-  --bg-color: rgba(0,0,0,0.5);
-  --overlay-color: rgba(0,0,0,0.5);
+  --bg-color: rgba(0,0,0,0.7);
+  --overlay-color: rgba(0, 0, 0, 0.787);
 
   /* Colors */
   --text-color: #ffffff;
@@ -241,7 +241,7 @@ body::before {
   display: inline-block;
   width: 1em;
   height: 1em;
-  background: url('img/logo2.svg') no-repeat center center;
+  background: url('img/union-street-collective-logo.svg') no-repeat center center;
   background-size: contain;
   vertical-align: middle;
   margin:-10px;
@@ -404,6 +404,171 @@ body::before {
 }
 
 /* =========================
+   ARTISTS
+   ========================= */
+.artist-list,
+.merch-list {
+  width: 100%;
+  max-width: 860px;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.artist-card,
+.merch-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+  text-align: left;
+  margin: 2rem auto 0 auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.artist-card:hover,
+.merch-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(255,255,255,0.15);
+}
+
+.artist-card { opacity: 0; transform: translateY(12px); animation: fadeInUp 0.6s ease forwards; }
+.merch-card { opacity: 0; transform: translateY(12px); animation: fadeInUp 0.6s ease forwards; }
+
+.artist-photo-wrap,
+.merch-image-wrap {
+  flex: 0 0 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.artist-photo,
+.merch-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+}
+
+.artist-photo-fallback,
+.merch-image-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-brand);
+  font-size: 2.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+}
+
+.artist-info,
+.merch-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.artist-name,
+.merch-title {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-brand);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+}
+
+.artist-bio,
+.merch-description {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  opacity: 0.9;
+  margin-bottom: 0.75rem;
+}
+
+.artist-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.artist-link,
+.merch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.artist-link {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.artist-link:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.merch-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.merch-price {
+  font-family: var(--font-brand);
+  font-size: 1rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+}
+
+.merch-btn {
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .artist-card,
+  .merch-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .artist-photo-wrap,
+  .merch-image-wrap {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .artist-photo,
+  .merch-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .merch-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* =========================
    CONTACT CARD
    ========================= */
 .contact-card {
@@ -434,7 +599,7 @@ body::before {
 /* Contact button */
 .contact-btn {
   width: auto;
-  max-width: 180px;  /* prevent oversize on mobile */
+  max-width: 180px;
   padding: 0.4rem 0.6rem;
   display: inline-flex;
   align-items: center;
@@ -450,7 +615,7 @@ body::before {
 }
 
 .contact-btn .btn-icon svg {
-  width: 36px;   /* larger icon desktop-friendly */
+  width: 36px;
   height: 36px;
 }
 
@@ -472,7 +637,6 @@ body::before {
   100% { opacity: 1; transform: translateX(0); }
 }
 
-/* Apply animations */
 #content-home .hero-logo {
   opacity: 0;
   animation: fadeIn 1.5s ease forwards;
@@ -700,6 +864,6 @@ body::before {
   position: relative; /* Keep it where it should be */
 }
 .nav-link{
-  margin-bottom: 6vh;
+  margin-bottom: 5vh;
 }
 }
