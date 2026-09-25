@@ -1,0 +1,29 @@
+- name: "Scott Foor and The Trust Fund Cowboys"
+  slug: "scott-foor-and-the-trust-fund-cowboys"
+  bio: "Scott Foor and the Trust Fund Cowboys showed up in town one day and it's been trouble ever since. Hide your kids, hide your wife, and especially hide your whiskey."
+  img: "img/artists/scott-foor-and-the-trust-fund-cowboys.jpg"
+  links:
+    - label: "Bandcamp"
+      url: "https://bandcamp.com/"
+    - label: "Instagram"
+      url: "https://instagram.com/"
+
+- name: "Faceless Jay"
+  slug: "faceless-jay"
+  bio: "Faceless Jay is a rogue AI hellbent on destroying humanity. It writes pretty good songs though, so we let it hang around."
+  img: "img/artists/faceless-jay.svg"
+  links:
+    - label: "Spotify"
+      url: "https://open.spotify.com/"
+    - label: "YouTube"
+      url: "https://youtube.com/"
+
+- name: "Okserafina"
+  slug: "okserafina"
+  bio: "It was a hell of a rainstorm when she showed up one day. Seen her blowing with the wind, out Durango's way."
+  img: "img/artists/okserafina.avif"
+  links:
+    - label: "Instagram"
+      url: "https://instagram.com/"
+    - label: "SoundCloud"
+      url: "https://soundcloud.com/"

@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title><!-- {{ARTIST_NAME}} --> | Official Music Website</title>
+
+  <meta name="description" content="{{DESCRIPTION}}">
+
+  <link rel="canonical" href="{{CANONICAL_URL}}">
+
+  <!-- OpenGraph for social previews -->
+  <meta property="og:title" content="{{ARTIST_NAME}} | Official Music Website">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:url" content="{{CANONICAL_URL}}">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="{{OPENGRAPH_IMAGE}}">
+
+  <!-- Music schema for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "{{ARTIST_NAME}}",
+    "url": "{{CANONICAL_URL}}",
+    "genre": {{GENRE_LIST}},
+    "sameAs": {{SAMEAS_LIST}}
+  }
+  </script>
+
+
+  
+  <!-- Google / Android -->
+  <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192x192.png">
+
+  <!-- Apple / iOS -->
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180x180.png">
+  <!-- Favicon -->
+  <link rel="icon" href="img/union-street-collective-logo.svg" type="image/svg+xml">
+
+  <!-- Google Search -->
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    crossorigin="anonymous">
+
+  <!-- Fonts -->
+  <!-- {{FONTS}} -->
+
+  <!-- Custom CSS -->
+  <link href="cover.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+
+<div class="cover-container d-flex p-3 mx-auto flex-column">
+
+  <!-- Header -->
+  <header class="masthead mb-auto">
+    <div class="inner">
+      <h3 class="masthead-brand" id="header-logo">
+        <img src="img/union-street-collective-logo.svg" alt="Logo">
+      </h3>
+
+      <div class="nav-container">
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation">☰</button>
+        <nav class="nav nav-masthead justify-content-center nav-collapsible" id="main-nav">
+          <a class="nav-link active" id="nav-home">Home</a>
+          <a class="nav-link" id="nav-bio">Bio</a>
+          <a class="nav-link" id="nav-events">Events</a>
+          <a class="nav-link" id="nav-artists">Artists</a>
+          <a class="nav-link" id="nav-merch">Merch</a>
+          <a class="nav-link" id="nav-contact">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main role="main" class="inner cover">
+
+    <!-- HOME -->
+    <div id="content-home">
+      <div class="hero-logo mb-3">
+        <img src="img/union-street-collective-logo.svg" alt="{{ARTIST_NAME}} Logo" class="img-fluid" style="max-height: 200px;">
+      </div>
+    </div>
+
+    <!-- BIO -->
+    <div id="content-bio" style="display:none;">
+      <div id="bio-cms" class="lead">
+        <!-- {{BIO_MARKDOWN}} -->
+      </div>
+      <h1 class="cover-heading"><!-- {{ARTIST_NAME}} --></h1>
+    </div>
+
+    <!-- EVENTS -->
+    <div id="content-events" style="display:none;">
+      <h1 class="cover-heading fade-in-appear">Upcoming Events</h1>
+
+      <div class="event-list">
+        <!-- {{EVENTS_SECTION}} -->
+      </div>
+
+    </div>
+
+    <!-- ARTISTS -->
+    <div id="content-artists" style="display:none;">
+      <h1 class="cover-heading fade-in-appear">Our Artists</h1>
+
+      <div class="artist-list">
+        <!-- {{ARTISTS_SECTION}} -->
+      </div>
+    </div>
+
+    <!-- MERCH -->
+    <div id="content-merch" style="display:none;">
+      <h1 class="cover-heading fade-in-appear">Merch</h1>
+
+      <div class="merch-list">
+        <!-- {{MERCH_SECTION}} -->
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="content-contact" style="display:none;">
+      <h1 class="cover-heading fade-in-appear">Contact</h1>
+      <div class="contact-card fade-in-appear">
+        <p class="lead"><!-- {{CONTACT_STR}} --></p>
+        <a href="mailto:{{ARTIST_EMAIL}}" class="btn btn-lg btn-secondary contact-btn">
+          <span class="btn-icon">
+            <!-- Inline SVG envelope -->
+            <svg fill="currentColor" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 5H2V4H20V5H21V18H20V19H2V18H1V5M3 17H19V9H18V10H16V11H14V12H12V13H10V12H8V11H6V10H4V9H3V17M19 6H3V7H5V8H7V9H9V10H13V9H15V8H17V7H19V6Z" />
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mastfoot mt-auto">
+    <div class="inner">
+      <p><!-- {{COPYRIGHT}} --></p>
+    </div>
+  </footer>
+
+</div>
+
+<!-- JS -->
+<script>
+
+const links = document.querySelectorAll(".nav-link");
+
+const sections = {
+  home: document.getElementById("content-home"),
+  bio: document.getElementById("content-bio"),
+  events: document.getElementById("content-events"),
+  artists: document.getElementById("content-artists"),
+  merch: document.getElementById("content-merch"),
+  contact: document.getElementById("content-contact")
+};
+
+function showSection(section) {
+
+  Object.values(sections).forEach(div => {
+    div.style.display = "none";
+    div.style.opacity = "0";
+  });
+
+  const activeSection = sections[section];
+  activeSection.style.display = "block";
+
+  requestAnimationFrame(() => {
+    activeSection.style.opacity = "1";
+  });
+
+  links.forEach(link => link.classList.remove("active"));
+  document.getElementById("nav-" + section).classList.add("active");
+
+  const headerLogo = document.getElementById("header-logo");
+
+  if (section === "home") {
+    headerLogo.style.opacity = "0";
+    headerLogo.style.pointerEvents = "none";
+  } else {
+    headerLogo.style.visibility = "visible";
+    headerLogo.style.opacity = "1";
+    headerLogo.style.pointerEvents = "auto";
+  }
+
+  const nav = document.getElementById('main-nav');
+  if (nav && nav.classList.contains('open')) {
+    nav.classList.remove('open');
+  }
+}
+
+document.getElementById("nav-home").onclick = () => showSection("home");
+document.getElementById("nav-bio").onclick = () => showSection("bio");
+document.getElementById("nav-contact").onclick = () => showSection("contact");
+document.getElementById("nav-events").onclick = () => showSection("events");
+document.getElementById("nav-artists").onclick = () => showSection("artists");
+document.getElementById("nav-merch").onclick = () => showSection("merch");
+
+const navToggle = document.getElementById('nav-toggle');
+const mainNav = document.getElementById('main-nav');
+
+navToggle.addEventListener('click', () => {
+  mainNav.classList.toggle('open');
+
+  if (mainNav.classList.contains('open')) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
+
+showSection("home");
+
+</script>
+<script>
+(function() {
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScript = document.getElementsByTagName('script')[0];
+  firstScript.parentNode.insertBefore(tag, firstScript);
+
+  window.onYouTubeIframeAPIReady = function() {
+    var iframes = document.querySelectorAll('.yt-embed');
+    iframes.forEach(function(frame) {
+      var player = new YT.Player(frame.id, {
+        events: {
+          onError: function() {
+            const watchUrl = frame.dataset.watchurl || '';
+            const fallback = document.createElement('a');
+            fallback.href = watchUrl || '#';
+            fallback.target = '_blank';
+            fallback.rel = 'noopener';
+            fallback.className = 'music-fallback';
+            fallback.textContent = 'Watch on YouTube';
+            frame.replaceWith(fallback);
+          }
+        }
+      });
+    });
+  };
+})();
+</script>
+</body>
+</html>

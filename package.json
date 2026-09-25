@@ -1,0 +1,35 @@
+{
+  "name": "theunioncollective-website",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Static website for The Union Collective — a collaborative music label and artist network.",
+  "main": "index.js",
+  "scripts": {
+    "build": "node node/build.js",
+    "start": "npx http-server . -p 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theunioncollective/theunioncollective-website.git"
+  },
+  "keywords": [
+    "music",
+    "collective",
+    "label",
+    "artists",
+    "merch",
+    "website"
+  ],
+  "author": "The Union Collective",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theunioncollective/theunioncollective-website/issues"
+  },
+  "homepage": "https://github.com/theunioncollective/theunioncollective-website#readme",
+  "dependencies": {
+    "js-beautify": "^1.15.4",
+    "js-yaml": "^4.1.1",
+    "marked": "^17.0.1"
+  }
+}

@@ -1,0 +1,33 @@
+copyright: "© The Union Collective"
+
+artist_name: "The Union Collective"
+artist_email: "hello@theunioncollective.io"
+
+contact_str: "For bookings, collaborations, and merch inquiries, reach out and we’ll make it happen."
+
+description: "The Union Collective — a guiding creative house, collective label, and artist network in Northern Michigan."
+
+opengraph_image: "https://theunioncollective.io/img/union-street-collective-logo.svg"
+
+canonical_url: "https://theunioncollective.io"
+
+fonts:
+  - "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap"
+  - "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600&display=swap"
+
+genre:
+  - "Indie Rock"
+  - "Folk"
+  - "Singer/Songwriter"
+  - "Chamber Folk"
+  - "Experimental"
+
+sameAs:
+  - "https://theunioncollective.io"
+  - "https://www.instagram.com/theunioncollective/"
+  - "https://www.facebook.com/theunioncollective/"
+  - "https://twitter.com/theunioncollective"
+  - "https://www.youtube.com/@theunioncollective"
+  - "https://open.spotify.com/artist/1a2b3c4d5e6f7g8h9i0j"
+
+
