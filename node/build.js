@@ -12,7 +12,6 @@ const { html: beautifyHtml } = jsBeautify;
 const templatePath = path.join('templates', 'index.template.html');
 const bioPath = path.join('content', 'bio.md');
 const musicPath = path.join('content', 'music.yaml');
-const artistsPath = path.join('content', 'artists.yaml');
 const merchPath = path.join('content', 'merch.yaml');
 const galleryPath = path.join('content', 'gallery');
 const outputPath = 'index.html';
@@ -113,58 +112,6 @@ if (fs.existsSync(musicPath)) {
 finalHtml = finalHtml.replace(
   '<!-- {{MUSIC_SECTION}} -->',
   musicHtml
-);
-
-// ---------- ARTISTS YAML ----------
-
-let artistsHtml = '';
-
-if (fs.existsSync(artistsPath)) {
-  const rawArtists = fs.readFileSync(artistsPath, 'utf-8');
-  const artistsData = yaml.load(rawArtists);
-  const items = Array.isArray(artistsData) ? artistsData : artistsData?.artists || [];
-
-  if (items.length === 0) {
-    artistsHtml = `
-      <div class="no-artists fade-in-appear">
-        No artists announced yet — check back soon.
-      </div>
-    `;
-  } else {
-    artistsHtml = items.map((artist, index) => {
-      const image = artist.img
-        ? `<img src="${artist.img}" alt="${artist.name}" class="artist-photo">`
-        : `<div class="artist-photo artist-photo-fallback">${(artist.name || 'Artist').slice(0, 1)}</div>`;
-
-      const links = Array.isArray(artist.links)
-        ? artist.links.map(link => `
-            <a href="${link.url}" target="_blank" rel="noopener" class="artist-link">
-              ${link.label || 'Link'}
-            </a>
-          `).join('')
-        : '';
-
-      const delay = (index * 0.13).toFixed(2);
-
-      return `
-        <div class="artist-card fade-in-appear" style="animation-delay: ${delay}s">
-          <div class="artist-photo-wrap">
-            ${image}
-          </div>
-          <div class="artist-info">
-            <h3 class="artist-name">${artist.name || 'Artist'}</h3>
-            <div class="artist-bio">${artist.bio || ''}</div>
-            <div class="artist-links">${links}</div>
-          </div>
-        </div>
-      `;
-    }).join('\n');
-  }
-}
-
-finalHtml = finalHtml.replace(
-  '<!-- {{ARTISTS_SECTION}} -->',
-  artistsHtml
 );
 
 // ---------- MERCH YAML ----------

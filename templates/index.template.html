@@ -112,8 +112,8 @@
     <div id="content-artists" style="display:none;">
       <h1 class="cover-heading fade-in-appear">Our Artists</h1>
 
-      <div class="artist-list">
-        <!-- {{ARTISTS_SECTION}} -->
+      <div class="artist-list" id="artist-list">
+        <div class="no-artists">Loading artists…</div>
       </div>
     </div>
 
@@ -301,6 +301,74 @@ showSection("home");
       list.replaceChildren(...events.map(renderEvent));
     })
     .catch(() => message("Couldn't load events right now — check back soon."));
+})();
+
+// Artists: members' public profiles from the portal, with a link to their own site once published.
+(function loadArtists() {
+  const list = document.getElementById('artist-list');
+  const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+  const api = isLocal ? 'http://localhost:8787' : document.getElementById('event-list').dataset.api;
+  const BIO_LENGTH = 280;
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function link(url, label, className) {
+    const a = el('a', className, label);
+    if (/^https?:\/\//.test(url)) a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    return a;
+  }
+
+  function excerpt(text) {
+    const first = (text || '').split('\n\n')[0];
+    return first.length > BIO_LENGTH ? first.slice(0, BIO_LENGTH).replace(/\s+\S*$/, '') + '…' : first;
+  }
+
+  function renderArtist(artist, index) {
+    const card = el('div', 'artist-card fade-in-appear');
+    card.style.animationDelay = `${(index * 0.13).toFixed(2)}s`;
+
+    const photoWrap = el('div', 'artist-photo-wrap');
+    if (artist.img_url) {
+      const img = el('img', 'artist-photo');
+      img.src = artist.img_url;
+      img.alt = artist.display_name;
+      img.loading = 'lazy';
+      photoWrap.append(img);
+    } else {
+      photoWrap.append(el('div', 'artist-photo artist-photo-fallback', artist.display_name.slice(0, 1)));
+    }
+
+    const links = el('div', 'artist-links');
+    if (artist.site_url) links.append(link(artist.site_url, 'Website', 'artist-link artist-site-link'));
+    for (const l of artist.links) links.append(link(l.url, l.label, 'artist-link'));
+
+    const info = el('div', 'artist-info');
+    // The short bio is written for this page; older profiles fall back to the start of the long bio.
+    const blurb = artist.short_bio || excerpt(artist.bio_text);
+    info.append(el('h3', 'artist-name', artist.display_name), el('div', 'artist-bio', blurb), links);
+    card.append(photoWrap, info);
+    return card;
+  }
+
+  fetch(`${api}/public/members`)
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    })
+    .then(artists => {
+      if (artists.length === 0) {
+        return list.replaceChildren(el('div', 'no-artists fade-in-appear', 'No artists announced yet — check back soon.'));
+      }
+      list.replaceChildren(...artists.map(renderArtist));
+    })
+    .catch(() => list.replaceChildren(el('div', 'no-artists fade-in-appear', "Couldn't load artists right now — check back soon.")));
 })();
 </script>
 <script>
