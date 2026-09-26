@@ -11,7 +11,6 @@ const { html: beautifyHtml } = jsBeautify;
 
 const templatePath = path.join('templates', 'index.template.html');
 const bioPath = path.join('content', 'bio.md');
-const eventsPath = path.join('content', 'events.yaml');
 const musicPath = path.join('content', 'music.yaml');
 const artistsPath = path.join('content', 'artists.yaml');
 const merchPath = path.join('content', 'merch.yaml');
@@ -30,101 +29,6 @@ const bioHtml = marked.parse(bioMarkdown);
 let finalHtml = template.replace(
   '<!-- {{BIO_MARKDOWN}} -->',
   bioHtml
-);
-
-// ---------- EVENTS YAML ----------
-
-const today = new Date();
-today.setHours(0, 0, 0, 0); // midnight compare
-
-let eventsHtml = '';
-
-if (fs.existsSync(eventsPath)) {
-
-  const raw = fs.readFileSync(eventsPath, 'utf-8');
-  const data = yaml.load(raw);
-
-  let events = data?.events || [];
-
-  // Filter past events (date only)
-  events = events.filter(event => {
-    const eventDate = new Date(event.date);
-    return eventDate >= today;
-  });
-
-  // Sort by date only
-  events.sort((a, b) => {
-    return new Date(a.date) - new Date(b.date);
-  });
-
-  if (events.length === 0) {
-
-    eventsHtml = `
-      <div class="no-events fade-in-appear">
-        No upcoming events — check back soon.
-      </div>
-    `;
-
-  } else {
-
-    eventsHtml = events.map((event, index) => {
-
-      const dateObj = new Date(event.date);
-
-      const formattedDate = dateObj.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      });
-
-      const timeText = event.time
-        ? ` · ${event.time}`
-        : '';
-
-      const ticketButton = event.tickets
-        ? `
-          <a href="${event.tickets}"
-             target="_blank"
-             rel="noopener"
-             class="btn btn-secondary event-btn">
-            Info
-          </a>
-        `
-        : `<button class="btn btn-secondary event-btn deactivated" disabled>No Info</button>`;
-
-      const featuredClass = index === 0 ? 'featured-event' : '';
-      const delay = (index * 0.15).toFixed(2);
-
-      return `
-        <div class="event-card fade-in-appear ${featuredClass}"
-             style="animation-delay: ${delay}s">
-
-          <div class="event-info">
-            <div class="event-date">
-              ${formattedDate}${timeText}
-            </div>
-
-            <div class="event-location">
-              ${event.location}
-            </div>
-          </div>
-
-          ${ticketButton}
-
-        </div>
-      `;
-
-    }).join('\n');
-
-  }
-
-}
-
-// ---------- INJECT EVENTS ----------
-
-finalHtml = finalHtml.replace(
-  '<!-- {{EVENTS_SECTION}} -->',
-  eventsHtml
 );
 
 // ---------- MUSIC YAML ----------
@@ -363,6 +267,11 @@ finalHtml = finalHtml.replace('<!-- {{GALLERY_SECTION}} -->', galleryHtml);
 const configRaw = fs.readFileSync(path.join('content', 'config.yaml'), 'utf-8');
 const configData = yaml.load(configRaw);
 
+
+// ---------- INJECT EVENTS API ----------
+// Events are fetched in the browser from the backend (see the events script in the template).
+const eventsApi = (configData?.events_api || '').replace(/\/$/, '');
+finalHtml = finalHtml.replace(/{{EVENTS_API}}/g, eventsApi);
 
 // ---------- INJECT COPYRIGHT ----------
 const copyrightText = configData?.copyright || '';

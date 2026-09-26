@@ -11,6 +11,10 @@ opengraph_image: "https://theunioncollective.io/img/union-street-collective-logo
 
 canonical_url: "https://theunioncollective.io"
 
+# Upcoming events are loaded in the browser from here. Members manage them in the portal
+# (portal.theunioncollective.io). On localhost the site uses http://localhost:8787 instead.
+events_api: "https://backend.theunioncollective.io"
+
 fonts:
   - "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap"
   - "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600&display=swap"
