@@ -102,8 +102,8 @@
     <div id="content-events" style="display:none;">
       <h1 class="cover-heading fade-in-appear">Upcoming Events</h1>
 
-      <div class="event-list">
-        <!-- {{EVENTS_SECTION}} -->
+      <div class="event-list" id="event-list" data-api="{{EVENTS_API}}">
+        <div class="no-events">Loading events…</div>
       </div>
 
     </div>
@@ -223,6 +223,85 @@ navToggle.addEventListener('click', () => {
 
 showSection("home");
 
+</script>
+<script>
+// Upcoming events from the backend (members manage them at portal.theunioncollective.io).
+// Built with textContent, never innerHTML: event text is entered by members.
+(function loadEvents() {
+  const list = document.getElementById('event-list');
+  const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+  const api = isLocal ? 'http://localhost:8787' : list.dataset.api;
+
+  const pad = n => String(n).padStart(2, '0');
+  const now = new Date();
+  const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
+  // Dates/times are the venue's wall-clock values, so format from parts, not as instants.
+  function formatDate(iso) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function formatTime(hhmm) {
+    const [h, m] = hhmm.split(':').map(Number);
+    return `${h % 12 || 12}:${pad(m)}${h < 12 ? 'AM' : 'PM'}`;
+  }
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function message(text) {
+    list.replaceChildren(el('div', 'no-events fade-in-appear', text));
+  }
+
+  function renderEvent(event, index) {
+    const card = el('div', 'event-card fade-in-appear' + (index === 0 ? ' featured-event' : ''));
+    card.style.animationDelay = `${(index * 0.15).toFixed(2)}s`;
+
+    let when = formatDate(event.date);
+    if (event.start_time) {
+      when += ` · ${formatTime(event.start_time)}`;
+      if (event.end_time) when += ` - ${formatTime(event.end_time)}`;
+    }
+    const where = [event.title, event.venue, event.city].filter(Boolean).join(' — ');
+
+    const info = el('div', 'event-info');
+    info.append(
+      el('div', 'event-date', when),
+      el('div', 'event-location', where || 'Venue TBA'),
+      el('div', 'event-artist', event.member_name)
+    );
+
+    let button;
+    if (event.ticket_url && /^https?:\/\//.test(event.ticket_url)) {
+      button = el('a', 'btn btn-secondary event-btn', 'Info');
+      button.href = event.ticket_url;
+      button.target = '_blank';
+      button.rel = 'noopener';
+    } else {
+      button = el('button', 'btn btn-secondary event-btn deactivated', 'No Info');
+      button.disabled = true;
+    }
+
+    card.append(info, button);
+    return card;
+  }
+
+  fetch(`${api}/public/events?from=${today}`)
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    })
+    .then(events => {
+      if (events.length === 0) return message('No upcoming events — check back soon.');
+      list.replaceChildren(...events.map(renderEvent));
+    })
+    .catch(() => message("Couldn't load events right now — check back soon."));
+})();
 </script>
 <script>
 (function() {
