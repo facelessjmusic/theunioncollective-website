@@ -39,11 +39,16 @@ http://localhost:8080
 
 - `content/config.yaml` — site metadata
 - `content/bio.md` — bio text
-- `content/config.yaml` → `events_api` — where upcoming events are loaded from (see below)
+- `content/config.yaml` → `events_api` — the backend that events and artists load from (see below)
 - `content/music.yaml` — music embeds
-- `content/artists.yaml` — artist roster
 - `content/merch.yaml` — merch catalog
 - `content/gallery/` — gallery images
+
+## Artists
+
+The artist roster is the members' public profiles from the portal: photo, name, **short bio** and links,
+plus a **Website** link to their own `<slug>.theunioncollective.io` site once it's published.
+The page loads them in the browser from `<events_api>/public/members`.
 
 ## Events
 
